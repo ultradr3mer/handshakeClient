@@ -1,13 +1,18 @@
-﻿using handshakeMobile.Views;
+﻿using handshakeMobile.Services;
+using handshakeMobile.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace handshakeMobile.ViewModels
 {
   public class LoginViewModel : BaseViewModel
   {
+    public const string UsernameKey = "username";
+    public const string PasswordKey = "password";
+
     private string propPassword;
     public string Password
     {
@@ -22,31 +27,49 @@ namespace handshakeMobile.ViewModels
       set { SetProperty(ref propUsername, value); }
     }
 
+    private string propMessage;
+    public string Message
+    {
+      get { return propMessage; }
+      set { SetProperty(ref propMessage, value); }
+    }
+
     public Command LoginCommand { get; }
 
     public LoginViewModel()
     {
+      var usernameTask = SecureStorage.GetAsync(LoginViewModel.UsernameKey); 
+      var passwordTask = SecureStorage.GetAsync(LoginViewModel.PasswordKey);
+
+      this.Username = usernameTask.Result;
+      this.Password = passwordTask.Result;
+
       LoginCommand = new Command(OnLoginClicked);
     }
 
     private async void OnLoginClicked(object obj)
     {
-      //// Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
-      //await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+      var client = new Client(new CustomHttpClient(this.Username, this.Password));
 
+      try
+      {
+        var test = await client.GetcloseusersAsync(0, 0);
+        Message = string.Empty;
 
-      //var isValid = AreCredentialsCorrect();
-      //if (isValid)
-      //{
-      //  App.IsUserLoggedIn = true;
-      //  Shell.Current.Navigation.InsertPageBefore(new AppShell(), this);
-      //  await Shell.Current.Navigation.PopAsync();
-      //}
-      //else
-      //{
-      //  messageLabel.Text = "Login failed";
-      //  passwordEntry.Text = string.Empty;
-      //}
+        await SecureStorage.SetAsync(LoginViewModel.UsernameKey, this.Username);
+        await SecureStorage.SetAsync(LoginViewModel.PasswordKey, this.Password);
+
+        App.Client = client;
+
+        await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+      }
+      catch (ApiException exception)
+      {
+        await SecureStorage.SetAsync(LoginViewModel.UsernameKey, string.Empty);
+        await SecureStorage.SetAsync(LoginViewModel.PasswordKey, string.Empty);
+
+        Message = exception.ToString();
+      }
     }
 
     private bool AreCredentialsCorrect()

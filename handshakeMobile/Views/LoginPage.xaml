@@ -12,8 +12,7 @@
       <Entry Placeholder="username" Text="{Binding Username}" />
       <Label Text="Password" />
       <Entry Placeholder="password" IsPassword="true" Text="{Binding Password}" />
-      <Button Text="Login" Clicked="LoginClicked" />
-      <!--<Button Text="Login" Command="{Binding LoginCommand}" />-->
+      <Button Text="Login" Command="{Binding LoginCommand}" />
       <Label Text="{Binding Message}" />
     </StackLayout>
   </ContentPage.Content>

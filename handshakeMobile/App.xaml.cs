@@ -9,6 +9,7 @@ namespace handshakeMobile
   public partial class App : Application
   {
     public static bool IsUserLoggedIn { get; internal set; }
+    public static Client Client { get; internal set; }
 
     public App()
     {
