@@ -13,20 +13,20 @@ namespace handshakeMobile.ViewModels
 {
   public class PostsViewModel : BaseViewModel
   {
-    private Post propSelectedPost;
+    private PostGetData propSelectedPost;
 
-    public ObservableCollection<Post> Posts { get; }
+    public ObservableCollection<PostGetData> Posts { get; }
     public Command LoadItemsCommand { get; }
     public Command AddItemCommand { get; }
-    public Command<Post> ItemTapped { get; }
+    public Command<PostGetData> ItemTapped { get; }
 
     public PostsViewModel()
     {
       Title = "Browse";
-      Posts = new ObservableCollection<Post>();
+      Posts = new ObservableCollection<PostGetData>();
       LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-      ItemTapped = new Command<Post>(OnPostSelected);
+      ItemTapped = new Command<PostGetData>(OnPostSelected);
 
       AddItemCommand = new Command(OnAddItem);
     }
@@ -60,7 +60,7 @@ namespace handshakeMobile.ViewModels
       SelectedPost = null;
     }
 
-    public Post SelectedPost
+    public PostGetData SelectedPost
     {
       get => propSelectedPost;
       set
@@ -75,7 +75,7 @@ namespace handshakeMobile.ViewModels
       await Shell.Current.GoToAsync(nameof(NewItemPage));
     }
 
-    async void OnPostSelected(Post item)
+    async void OnPostSelected(PostGetData item)
     {
       if (item == null)
         return;

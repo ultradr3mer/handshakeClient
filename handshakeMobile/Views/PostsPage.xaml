@@ -21,8 +21,8 @@
                 SelectionMode="None">
       <CollectionView.ItemTemplate>
         <DataTemplate>
-          <StackLayout Padding="10" x:DataType="service:Post">
-            <Label Text="{Binding Author}" 
+          <StackLayout Padding="10" x:DataType="service:PostGetData">
+            <Label Text="{Binding AuthorName}" 
                   LineBreakMode="NoWrap" 
                   Style="{DynamicResource ListItemTextStyle}" 
                   FontSize="16" />

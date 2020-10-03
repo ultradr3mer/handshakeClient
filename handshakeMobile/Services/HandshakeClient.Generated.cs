@@ -12,9 +12,10 @@
 
 namespace handshakeMobile.Services
 {
-    using System = global::System;
-    
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.1.0 (NJsonSchema v10.2.0.0 (Newtonsoft.Json v12.0.0.0))")]
+  using System = global::System;
+
+
+  [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.1.0 (NJsonSchema v10.2.0.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class Client 
     {
         private string _baseUrl = "https://handshake.azurewebsites.net";
@@ -50,7 +51,7 @@ namespace handshakeMobile.Services
         /// <summary>Gets all posts nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Post>> GetclosepostsAsync(double? longitude, double? latitude)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetclosepostsAsync(double? longitude, double? latitude)
         {
             return GetclosepostsAsync(longitude, latitude, System.Threading.CancellationToken.None);
         }
@@ -59,7 +60,7 @@ namespace handshakeMobile.Services
         /// <summary>Gets all posts nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Post>> GetclosepostsAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetclosepostsAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Post/getcloseposts?");
@@ -103,7 +104,7 @@ namespace handshakeMobile.Services
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Post>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<PostGetData>>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -134,7 +135,7 @@ namespace handshakeMobile.Services
         /// <param name="body">The post to post.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Post> PostAsync(InsertPostData body)
+        public System.Threading.Tasks.Task<PostEntity> PostAsync(PostPostData body)
         {
             return PostAsync(body, System.Threading.CancellationToken.None);
         }
@@ -144,7 +145,7 @@ namespace handshakeMobile.Services
         /// <param name="body">The post to post.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Post> PostAsync(InsertPostData body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PostEntity> PostAsync(PostPostData body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Post");
@@ -182,7 +183,7 @@ namespace handshakeMobile.Services
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Post>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<PostEntity>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -212,7 +213,7 @@ namespace handshakeMobile.Services
         /// <summary>Gets all users nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetcloseusersAsync(double? longitude, double? latitude)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserEntity>> GetcloseusersAsync(double? longitude, double? latitude)
         {
             return GetcloseusersAsync(longitude, latitude, System.Threading.CancellationToken.None);
         }
@@ -221,7 +222,7 @@ namespace handshakeMobile.Services
         /// <summary>Gets all users nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetcloseusersAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserEntity>> GetcloseusersAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/User/getcloseusers?");
@@ -265,7 +266,7 @@ namespace handshakeMobile.Services
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<User>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<UserEntity>>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -296,7 +297,7 @@ namespace handshakeMobile.Services
         /// <param name="body">The user to create.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UserAsync(InsertUserDaten body)
+        public System.Threading.Tasks.Task UserAsync(UserPostData body)
         {
             return UserAsync(body, System.Threading.CancellationToken.None);
         }
@@ -306,7 +307,7 @@ namespace handshakeMobile.Services
         /// <param name="body">The user to create.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task UserAsync(InsertUserDaten body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UserAsync(UserPostData body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/User");
@@ -469,7 +470,57 @@ namespace handshakeMobile.Services
 
     /// <summary>A post.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class Post 
+    public partial class PostGetData 
+    {
+        /// <summary>The id.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Id { get; set; }
+    
+        /// <summary>The author.</summary>
+        [Newtonsoft.Json.JsonProperty("author", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Author { get; set; }
+    
+        /// <summary>The author name.</summary>
+        [Newtonsoft.Json.JsonProperty("authorName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AuthorName { get; set; }
+    
+        /// <summary>The content.</summary>
+        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Content { get; set; }
+    
+        /// <summary>The creation date.</summary>
+        [Newtonsoft.Json.JsonProperty("creationdate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Creationdate { get; set; }
+    
+    
+    }
+    
+    /// <summary>The insert post data is class for inserting new posts.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class PostPostData 
+    {
+        /// <summary>The author who made the post.</summary>
+        [Newtonsoft.Json.JsonProperty("author", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Author { get; set; }
+    
+        /// <summary>The contetn of the post.</summary>
+        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Content { get; set; }
+    
+        /// <summary>The post location longitude;</summary>
+        [Newtonsoft.Json.JsonProperty("longitude", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Longitude { get; set; }
+    
+        /// <summary>The post location latitude;</summary>
+        [Newtonsoft.Json.JsonProperty("latitude", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double Latitude { get; set; }
+    
+    
+    }
+    
+    /// <summary>A post.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class PostEntity 
     {
         /// <summary>The id.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -498,32 +549,9 @@ namespace handshakeMobile.Services
     
     }
     
-    /// <summary>The insert post data is class for inserting new posts.</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class InsertPostData 
-    {
-        /// <summary>The author who made the post.</summary>
-        [Newtonsoft.Json.JsonProperty("author", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid Author { get; set; }
-    
-        /// <summary>The contetn of the post.</summary>
-        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Content { get; set; }
-    
-        /// <summary>The post location longitude;</summary>
-        [Newtonsoft.Json.JsonProperty("longitude", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Longitude { get; set; }
-    
-        /// <summary>The post location latitude;</summary>
-        [Newtonsoft.Json.JsonProperty("latitude", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Latitude { get; set; }
-    
-    
-    }
-    
     /// <summary>A user.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class User 
+    public partial class UserEntity 
     {
         /// <summary>The id.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -531,10 +559,12 @@ namespace handshakeMobile.Services
     
         /// <summary>The users nickname.</summary>
         [Newtonsoft.Json.JsonProperty("nickname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(200)]
         public string Nickname { get; set; }
     
         /// <summary>The description.</summary>
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
         public string Description { get; set; }
     
     
@@ -542,7 +572,7 @@ namespace handshakeMobile.Services
     
     /// <summary>This class contains all information needed to insert an user.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class InsertUserDaten 
+    public partial class UserPostData 
     {
         /// <summary>The nickname.</summary>
         [Newtonsoft.Json.JsonProperty("nickname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
