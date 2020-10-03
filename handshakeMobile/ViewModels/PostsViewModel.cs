@@ -7,25 +7,26 @@ using Xamarin.Forms;
 
 using handshakeMobile.Models;
 using handshakeMobile.Views;
+using handshakeMobile.Services;
 
 namespace handshakeMobile.ViewModels
 {
-  public class ItemsViewModel : BaseViewModel
+  public class PostsViewModel : BaseViewModel
   {
-    private Item _selectedItem;
+    private Post propSelectedPost;
 
-    public ObservableCollection<Item> Items { get; }
+    public ObservableCollection<Post> Posts { get; }
     public Command LoadItemsCommand { get; }
     public Command AddItemCommand { get; }
-    public Command<Item> ItemTapped { get; }
+    public Command<Post> ItemTapped { get; }
 
-    public ItemsViewModel()
+    public PostsViewModel()
     {
       Title = "Browse";
-      Items = new ObservableCollection<Item>();
+      Posts = new ObservableCollection<Post>();
       LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-      ItemTapped = new Command<Item>(OnItemSelected);
+      ItemTapped = new Command<Post>(OnPostSelected);
 
       AddItemCommand = new Command(OnAddItem);
     }
@@ -36,11 +37,11 @@ namespace handshakeMobile.ViewModels
 
       try
       {
-        Items.Clear();
-        var items = await DataStore.GetItemsAsync(true);
+        Posts.Clear();
+        var items = await App.Client.GetclosepostsAsync(0,0);
         foreach (var item in items)
         {
-          Items.Add(item);
+          Posts.Add(item);
         }
       }
       catch (Exception ex)
@@ -56,16 +57,16 @@ namespace handshakeMobile.ViewModels
     public void OnAppearing()
     {
       IsBusy = true;
-      SelectedItem = null;
+      SelectedPost = null;
     }
 
-    public Item SelectedItem
+    public Post SelectedPost
     {
-      get => _selectedItem;
+      get => propSelectedPost;
       set
       {
-        SetProperty(ref _selectedItem, value);
-        OnItemSelected(value);
+        SetProperty(ref propSelectedPost, value);
+        OnPostSelected(value);
       }
     }
 
@@ -74,7 +75,7 @@ namespace handshakeMobile.ViewModels
       await Shell.Current.GoToAsync(nameof(NewItemPage));
     }
 
-    async void OnItemSelected(Item item)
+    async void OnPostSelected(Post item)
     {
       if (item == null)
         return;
