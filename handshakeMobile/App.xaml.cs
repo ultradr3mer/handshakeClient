@@ -8,12 +8,14 @@ namespace handshakeMobile
 {
   public partial class App : Application
   {
+    public static bool IsUserLoggedIn { get; internal set; }
 
     public App()
     {
       InitializeComponent();
 
       DependencyService.Register<MockDataStore>();
+
       MainPage = new AppShell();
     }
 

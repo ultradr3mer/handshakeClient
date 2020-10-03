@@ -17,5 +17,9 @@ namespace handshakeMobile.Views
       InitializeComponent();
       this.BindingContext = new LoginViewModel();
     }
+
+    private async void LoginClicked(object sender, EventArgs e)
+    {
+    }
   }
 }
