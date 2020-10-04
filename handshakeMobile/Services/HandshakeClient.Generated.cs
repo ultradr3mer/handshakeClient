@@ -12,10 +12,9 @@
 
 namespace handshakeMobile.Services
 {
-  using System = global::System;
-
-
-  [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.1.0 (NJsonSchema v10.2.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    using System = global::System;
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.1.0 (NJsonSchema v10.2.0.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class Client 
     {
         private string _baseUrl = "https://handshake.azurewebsites.net";
@@ -51,19 +50,19 @@ namespace handshakeMobile.Services
         /// <summary>Gets all posts nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetclosepostsAsync(double? longitude, double? latitude)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetClosePostsAsync(double? longitude, double? latitude)
         {
-            return GetclosepostsAsync(longitude, latitude, System.Threading.CancellationToken.None);
+            return GetClosePostsAsync(longitude, latitude, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets all posts nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetclosepostsAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetClosePostsAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Post/getcloseposts?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Post/GetClosePosts?");
             if (longitude != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("longitude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(longitude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -213,19 +212,19 @@ namespace handshakeMobile.Services
         /// <summary>Gets all users nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserEntity>> GetcloseusersAsync(double? longitude, double? latitude)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserEntity>> GetCloseUsersAsync(double? longitude, double? latitude)
         {
-            return GetcloseusersAsync(longitude, latitude, System.Threading.CancellationToken.None);
+            return GetCloseUsersAsync(longitude, latitude, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets all users nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserEntity>> GetcloseusersAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserEntity>> GetCloseUsersAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/User/getcloseusers?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/User/GetCloseUsers?");
             if (longitude != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("longitude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(longitude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -532,6 +531,7 @@ namespace handshakeMobile.Services
     
         /// <summary>The content.</summary>
         [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
         public string Content { get; set; }
     
         /// <summary>The creation date.</summary>
@@ -567,20 +567,32 @@ namespace handshakeMobile.Services
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         public string Description { get; set; }
     
+        /// <summary>The username for login.</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
+        public string Username { get; set; }
+    
     
     }
     
-    /// <summary>This class contains all information needed to insert an user.</summary>
+    /// <summary>This class contains all information needed to create an account.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class UserPostData 
     {
-        /// <summary>The nickname.</summary>
+        /// <summary>The public nickname.</summary>
         [Newtonsoft.Json.JsonProperty("nickname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(200)]
         public string Nickname { get; set; }
     
-        /// <summary>The description.</summary>
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Description { get; set; }
+        /// <summary>The username for login.</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
+        public string Username { get; set; }
+    
+        /// <summary>The password.</summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
+        public string Password { get; set; }
     
     
     }

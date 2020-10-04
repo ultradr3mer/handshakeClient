@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="handshakeMobile.Views.SignupPage"
+             xmlns:viewModel="clr-namespace:handshakeMobile.ViewModels"
+             x:DataType="viewModel:SignupViewModel">
+  <ContentPage.Content>
+      <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+        <Label Text="Username" />
+        <Entry Placeholder="username" Text="{Binding Username}" />
+        <Label Text="Display Name (otional)" />
+        <Entry Placeholder="display name" Text="{Binding Nickname}" />
+        <Label Text="Password" />
+        <Entry Placeholder="password" IsPassword="true" Text="{Binding Password}" />
+        <Button Text="Sign Up" Command="{Binding SignupCommand}" />
+        <ActivityIndicator x:Name="defaultActivityIndicator"
+                             VerticalOptions="CenterAndExpand"
+                             HorizontalOptions="Fill" IsRunning="{Binding IsBusy}"/>
+        <Label Text="{Binding Message}" />
+      </StackLayout>
+  </ContentPage.Content>
+</ContentPage>

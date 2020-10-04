@@ -5,14 +5,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="handshakeMobile.Views.LoginPage"
-             Shell.NavBarIsVisible="False">
+             xmlns:viewModel="clr-namespace:handshakeMobile.ViewModels"
+             Shell.NavBarIsVisible="False" x:DataType="viewModel:LoginViewModel">
   <ContentPage.Content>
     <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
       <Label Text="Username" />
       <Entry Placeholder="username" Text="{Binding Username}" />
       <Label Text="Password" />
       <Entry Placeholder="password" IsPassword="true" Text="{Binding Password}" />
-      <Button Text="Login" Command="{Binding LoginCommand}" />
+      <Button Text="Login" Command="{Binding LoginCommand}"/>
+      <Button Text="Signup" Command="{Binding SignupCommand}" />
+      <ActivityIndicator x:Name="defaultActivityIndicator"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="Fill" IsRunning="{Binding IsBusy}"/>
       <Label Text="{Binding Message}" />
     </StackLayout>
   </ContentPage.Content>

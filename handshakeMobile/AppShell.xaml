@@ -75,6 +75,7 @@
   </Shell.Resources>
 
   <ShellContent Route="LoginPage" Shell.FlyoutBehavior="Disabled" ContentTemplate="{DataTemplate local:LoginPage}" />
+  <ShellContent Route="SignupPage" Shell.FlyoutBehavior="Disabled" ContentTemplate="{DataTemplate local:SignupPage}" />
   
   <!-- 
         When the Flyout is visible this defines the content to display in the flyout.

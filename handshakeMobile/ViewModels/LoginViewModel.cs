@@ -1,8 +1,5 @@
 ﻿using handshakeMobile.Services;
 using handshakeMobile.Views;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -10,51 +7,73 @@ namespace handshakeMobile.ViewModels
 {
   public class LoginViewModel : BaseViewModel
   {
-    public const string UsernameKey = "username";
+    #region Fields
+
     public const string PasswordKey = "password";
-
-    private string propPassword;
-    public string Password
-    {
-      get { return propPassword; }
-      set { SetProperty(ref propPassword, value); }
-    }
-
-    private string propUsername;
-    public string Username
-    {
-      get { return propUsername; }
-      set { SetProperty(ref propUsername, value); }
-    }
-
+    public const string UsernameKey = "username";
     private string propMessage;
-    public string Message
-    {
-      get { return propMessage; }
-      set { SetProperty(ref propMessage, value); }
-    }
+    private string propPassword;
+    private string propUsername;
 
-    public Command LoginCommand { get; }
+    #endregion Fields
+
+    #region Constructors
 
     public LoginViewModel()
     {
-      var usernameTask = SecureStorage.GetAsync(LoginViewModel.UsernameKey); 
-      var passwordTask = SecureStorage.GetAsync(LoginViewModel.PasswordKey);
+      this.LoginCommand = new Command(this.LoginCommandExecute);
+      this.SignupCommand = new Command(this.SignupCommandExecute);
+    }
+
+    #endregion Constructors
+
+    #region Properties
+
+    public Command LoginCommand { get; }
+
+    public string Message
+    {
+      get { return this.propMessage; }
+      set { this.SetProperty(ref this.propMessage, value); }
+    }
+
+    public string Password
+    {
+      get { return this.propPassword; }
+      set { this.SetProperty(ref this.propPassword, value); }
+    }
+
+    public Command SignupCommand { get; }
+
+    public string Username
+    {
+      get { return this.propUsername; }
+      set { this.SetProperty(ref this.propUsername, value); }
+    }
+
+    #endregion Properties
+
+    #region Methods
+
+    internal void Initialize()
+    {
+      System.Threading.Tasks.Task<string> usernameTask = SecureStorage.GetAsync(LoginViewModel.UsernameKey);
+      System.Threading.Tasks.Task<string> passwordTask = SecureStorage.GetAsync(LoginViewModel.PasswordKey);
 
       this.Username = usernameTask.Result;
       this.Password = passwordTask.Result;
-
-      LoginCommand = new Command(OnLoginClicked);
     }
 
-    private async void OnLoginClicked(object obj)
+    private async void LoginCommandExecute(object obj)
     {
-      var client = new Client(new CustomHttpClient(this.Username, this.Password));
+      this.IsBusy = true;
+
+      Client client = new Client(new CustomHttpClient(this.Username, this.Password));
 
       try
       {
-        var test = await client.GetcloseusersAsync(0, 0);
-        Message = string.Empty;
+        System.Collections.Generic.ICollection<UserEntity> test = await client.GetCloseUsersAsync(0, 0);
+        this.Message = string.Empty;
 
         await SecureStorage.SetAsync(LoginViewModel.UsernameKey, this.Username);
         await SecureStorage.SetAsync(LoginViewModel.PasswordKey, this.Password);
@@ -68,13 +87,19 @@ namespace handshakeMobile.ViewModels
         await SecureStorage.SetAsync(LoginViewModel.UsernameKey, string.Empty);
         await SecureStorage.SetAsync(LoginViewModel.PasswordKey, string.Empty);
 
-        Message = exception.ToString();
+        this.Message = exception.ToString();
+      }
+      finally
+      {
+        this.IsBusy = false;
       }
     }
 
-    private bool AreCredentialsCorrect()
+    private async void SignupCommandExecute(object obj)
     {
-      return true;
+      await Shell.Current.GoToAsync($"//{nameof(SignupPage)}");
     }
+
+    #endregion Methods
   }
 }

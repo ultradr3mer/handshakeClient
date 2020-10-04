@@ -38,7 +38,7 @@ namespace handshakeMobile.ViewModels
       try
       {
         Posts.Clear();
-        var items = await App.Client.GetclosepostsAsync(0,0);
+        var items = await App.Client.GetClosePostsAsync(0,0);
         foreach (var item in items)
         {
           Posts.Add(item);
