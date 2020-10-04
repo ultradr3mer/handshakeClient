@@ -51,13 +51,12 @@ namespace handshakeMobile.ViewModels
     private async void SignupCommandExecute(object obj)
     {
       this.IsBusy = true;
+      this.Message = string.Empty;
 
       Client client = new Client(new HttpClient());
 
       try
       {
-        this.Message = string.Empty;
-
         var data = new UserPostData()
         {
           Username = this.Username,

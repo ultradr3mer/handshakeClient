@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-using handshakeMobile.Models;
 using handshakeMobile.Views;
 using handshakeMobile.Services;
+using Xamarin.Essentials;
 
 namespace handshakeMobile.ViewModels
 {
@@ -38,7 +38,9 @@ namespace handshakeMobile.ViewModels
       try
       {
         Posts.Clear();
-        var items = await App.Client.GetClosePostsAsync(0,0);
+        var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+        var location = await Geolocation.GetLocationAsync(request);
+        var items = await App.Client.GetClosePostsAsync(location.Latitude, location.Longitude);
         foreach (var item in items)
         {
           Posts.Add(item);
@@ -72,7 +74,7 @@ namespace handshakeMobile.ViewModels
 
     private async void OnAddItem(object obj)
     {
-      await Shell.Current.GoToAsync(nameof(NewItemPage));
+      await Shell.Current.GoToAsync(nameof(NewPostPage));
     }
 
     async void OnPostSelected(PostGetData item)

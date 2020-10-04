@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="handshakeMobile.Views.NewPostPage"
+             Shell.PresentationMode="ModalAnimated"
+             Title="New Post"
+             xmlns:viewModel="clr-namespace:handshakeMobile.ViewModels"
+             x:DataType="viewModel:NewPostViewModel">
+  <ContentPage.Content>
+    <StackLayout Spacing="3" Padding="15">
+      <Editor Text="{Binding Text, Mode=TwoWay}" FontSize="Medium" Placeholder="{Binding Placeholder}" AutoSize="TextChanges" />
+      <StackLayout Orientation="Horizontal">
+        <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+        <Button Text="Post" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+      </StackLayout>
+      <ActivityIndicator x:Name="defaultActivityIndicator"
+                             VerticalOptions="CenterAndExpand"
+                             HorizontalOptions="Fill" IsRunning="{Binding IsBusy}"/>
+      <Label Text="{Binding Message}" />
+    </StackLayout>
+  </ContentPage.Content>
+
+</ContentPage>

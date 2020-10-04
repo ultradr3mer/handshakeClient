@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using handshakeMobile.Models;
 using Xamarin.Forms;
 
 namespace handshakeMobile.ViewModels
@@ -43,10 +41,6 @@ namespace handshakeMobile.ViewModels
     {
       try
       {
-        var item = await DataStore.GetItemAsync(itemId);
-        Id = item.Id;
-        Text = item.Text;
-        Description = item.Description;
       }
       catch (Exception)
       {

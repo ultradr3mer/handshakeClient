@@ -50,26 +50,26 @@ namespace handshakeMobile.Services
         /// <summary>Gets all posts nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetClosePostsAsync(double? longitude, double? latitude)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetClosePostsAsync(double? latitude, double? longitude)
         {
-            return GetClosePostsAsync(longitude, latitude, System.Threading.CancellationToken.None);
+            return GetClosePostsAsync(latitude, longitude, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Gets all posts nearby.</summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetClosePostsAsync(double? longitude, double? latitude, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PostGetData>> GetClosePostsAsync(double? latitude, double? longitude, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Post/GetClosePosts?");
-            if (longitude != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("longitude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(longitude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
             if (latitude != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("latitude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(latitude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (longitude != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("longitude") + "=").Append(System.Uri.EscapeDataString(ConvertToString(longitude, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -131,7 +131,7 @@ namespace handshakeMobile.Services
         }
     
         /// <summary>Posts a new post.</summary>
-        /// <param name="body">The post to post.</param>
+        /// <param name="body">The handshake.PostData.PostPostData to post.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<PostEntity> PostAsync(PostPostData body)
@@ -141,7 +141,7 @@ namespace handshakeMobile.Services
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Posts a new post.</summary>
-        /// <param name="body">The post to post.</param>
+        /// <param name="body">The handshake.PostData.PostPostData to post.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<PostEntity> PostAsync(PostPostData body, System.Threading.CancellationToken cancellationToken)
@@ -498,10 +498,6 @@ namespace handshakeMobile.Services
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.0.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class PostPostData 
     {
-        /// <summary>The author who made the post.</summary>
-        [Newtonsoft.Json.JsonProperty("author", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid Author { get; set; }
-    
         /// <summary>The contetn of the post.</summary>
         [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Content { get; set; }

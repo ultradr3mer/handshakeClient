@@ -1,0 +1,39 @@
+﻿using handshakeMobile.ViewModels;
+using Xamarin.Forms;
+
+namespace handshakeMobile.Views
+{
+  public partial class NewPostPage : ContentPage
+  {
+    #region Constructors
+
+    public NewPostPage()
+    {
+      InitializeComponent();
+      BindingContext = new NewPostViewModel();
+    }
+
+    #endregion Constructors
+
+    #region Properties
+
+    public NewPostViewModel ViewModel
+    {
+      get { return this.BindingContext as NewPostViewModel; }
+      set { this.BindingContext = value; }
+    }
+
+    #endregion Properties
+
+    #region Methods
+
+    protected override void OnAppearing()
+    {
+      base.OnAppearing();
+
+      this.ViewModel.Initialize();
+    }
+
+    #endregion Methods
+  }
+}

@@ -15,8 +15,6 @@ namespace handshakeMobile
     {
       InitializeComponent();
 
-      DependencyService.Register<MockDataStore>();
-
       MainPage = new AppShell();
     }
 
