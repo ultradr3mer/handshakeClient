@@ -107,7 +107,7 @@ namespace handshakeMobile.ViewModels
 
       try
       {
-        await App.Client.PostAsync(data);
+        await App.Client.PostPostAsync(data);
 
         await Shell.Current.GoToAsync("..");
       }

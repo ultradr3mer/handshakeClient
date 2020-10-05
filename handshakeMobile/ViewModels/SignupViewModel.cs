@@ -64,7 +64,7 @@ namespace handshakeMobile.ViewModels
           Password = this.Password
         };
 
-        await client.UserAsync(data);
+        await client.UserPostAsync(data);
 
         await SecureStorage.SetAsync(LoginViewModel.UsernameKey, this.Username);
         await SecureStorage.SetAsync(LoginViewModel.PasswordKey, this.Password);

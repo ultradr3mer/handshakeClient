@@ -4,7 +4,6 @@
              x:Class="handshakeMobile.Views.PostsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:handshakeMobile.ViewModels"  
-             xmlns:model="clr-namespace:handshakeMobile.Models" 
              xmlns:service="clr-namespace:handshakeMobile.Services"
              x:Name="BrowsePostsPage">
 

@@ -67,13 +67,14 @@ namespace handshakeMobile.ViewModels
     private async void LoginCommandExecute(object obj)
     {
       this.IsBusy = true;
+      this.Message = string.Empty;
 
       Client client = new Client(new CustomHttpClient(this.Username, this.Password));
 
       try
       {
-        System.Collections.Generic.ICollection<UserEntity> test = await client.GetCloseUsersAsync(0, 0);
-        this.Message = string.Empty;
+        var test = await client.UserGetAsync();
+        this.Message = $"Signed in as {test.Nickname}.";
 
         await SecureStorage.SetAsync(LoginViewModel.UsernameKey, this.Username);
         await SecureStorage.SetAsync(LoginViewModel.PasswordKey, this.Password);

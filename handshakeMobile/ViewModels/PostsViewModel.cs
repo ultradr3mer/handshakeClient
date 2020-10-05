@@ -40,7 +40,7 @@ namespace handshakeMobile.ViewModels
         Posts.Clear();
         var request = new GeolocationRequest(GeolocationAccuracy.Medium);
         var location = await Geolocation.GetLocationAsync(request);
-        var items = await App.Client.GetClosePostsAsync(location.Latitude, location.Longitude);
+        var items = await App.Client.PostGetclosepostsAsync(location.Latitude, location.Longitude);
         foreach (var item in items)
         {
           Posts.Add(item);
@@ -83,7 +83,7 @@ namespace handshakeMobile.ViewModels
         return;
 
       // This will push the ItemDetailPage onto the navigation stack
-      await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+      await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(PostDetailViewModel.Id)}={item.Id}");
     }
   }
 }

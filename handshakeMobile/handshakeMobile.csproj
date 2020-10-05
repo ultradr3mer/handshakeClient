@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\PostDetailPage.xaml.cs">
+      <DependentUpon>PostDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\NewPostPage.xaml.cs">
       <DependentUpon>NewPostPage.xaml</DependentUpon>
     </Compile>
