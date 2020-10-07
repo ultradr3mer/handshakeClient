@@ -16,8 +16,9 @@
       <Button Text="Login" Command="{Binding LoginCommand}"/>
       <Button Text="Signup" Command="{Binding SignupCommand}" />
       <ActivityIndicator x:Name="defaultActivityIndicator"
-                           VerticalOptions="CenterAndExpand"
-                           HorizontalOptions="Fill" IsRunning="{Binding IsBusy}"/>
+                         VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="Fill" 
+                         IsRunning="{Binding IsBusy}"/>
       <Label Text="{Binding Message}" />
     </StackLayout>
   </ContentPage.Content>

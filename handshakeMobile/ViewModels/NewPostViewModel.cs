@@ -1,5 +1,6 @@
 ﻿using handshakeMobile.Services;
 using System;
+using System.ComponentModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -13,17 +14,26 @@ namespace handshakeMobile.ViewModels
     private string propMessage;
     private string propPlaceholder;
     private string propText;
+    private readonly LocationCache locationCache;
 
     #endregion Fields
 
     #region Constructors
 
-    public NewPostViewModel()
+    public NewPostViewModel(LocationCache locationCache)
     {
       this.SaveCommand = new Command(this.SaveCommandExecute, this.SaveCommandCanExecute);
       this.CancelCommand = new Command(this.OnCancel);
-      this.PropertyChanged +=
-          (_, __) => this.SaveCommand.ChangeCanExecute();
+      this.PropertyChanged += this.NewPostViewModelPropertyChanged;
+      this.locationCache = locationCache;
+    }
+
+    private void NewPostViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == nameof(this.Location) || e.PropertyName == nameof(this.Text))
+      {
+        this.SaveCommand.ChangeCanExecute();
+      }
     }
 
     #endregion Constructors
@@ -34,14 +44,14 @@ namespace handshakeMobile.ViewModels
 
     public Location Location
     {
-      get { return propLocation; }
-      set { SetProperty(ref propLocation, value); }
+      get { return this.propLocation; }
+      set { this.SetProperty(ref this.propLocation, value); }
     }
 
     public string Message
     {
-      get { return propMessage; }
-      set { SetProperty(ref propMessage, value); }
+      get { return this.propMessage; }
+      set { this.SetProperty(ref this.propMessage, value); }
     }
 
     public string Placeholder
@@ -67,21 +77,20 @@ namespace handshakeMobile.ViewModels
       string placehoder = GetRandomPlaceholder();
       this.Placeholder = placehoder;
 
-      var request = new GeolocationRequest(GeolocationAccuracy.Medium);
-      this.Location = await Geolocation.GetLocationAsync(request);
+      this.Location = await this.locationCache.GetCurrentLocation(Enums.TimePassed.JustNow);
     }
 
     private static string GetRandomPlaceholder()
     {
-      var placehoders = new string[]
+      string[] placehoders = new string[]
       {
         "I like unicorns",
         "Nahrwal swimming in the ocean",
         "First !!1!!!!",
         "We must construct additional pylons"
       };
-      var rnd = new Random();
-      var placehoder = placehoders[rnd.Next(0, placehoders.Length - 1)];
+      Random rnd = new Random();
+      string placehoder = placehoders[rnd.Next(0, placehoders.Length - 1)];
       return placehoder;
     }
 
@@ -101,9 +110,9 @@ namespace handshakeMobile.ViewModels
       this.IsBusy = true;
       this.Message = string.Empty;
 
-      var location = this.Location;
+      Location location = this.Location;
 
-      var data = new PostPostData()
+      PostPostData data = new PostPostData()
       {
         Content = Text,
         Latitude = location.Latitude,

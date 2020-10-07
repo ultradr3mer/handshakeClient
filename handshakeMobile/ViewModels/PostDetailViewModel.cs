@@ -57,7 +57,6 @@ namespace handshakeMobile.ViewModels
       {
         this.propId = value;
         this.idGuid = Guid.Parse(value);
-        this.IsBusy = true;
       }
     }
 
@@ -98,6 +97,11 @@ namespace handshakeMobile.ViewModels
     #endregion Properties
 
     #region Methods
+
+    public void OnAppearing()
+    {
+      IsBusy = true;
+    }
 
     public async void LoadItemById(Guid itemId)
     {

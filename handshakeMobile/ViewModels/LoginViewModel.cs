@@ -1,5 +1,6 @@
 ﻿using handshakeMobile.Services;
 using handshakeMobile.Views;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -56,19 +57,26 @@ namespace handshakeMobile.ViewModels
 
     #region Methods
 
-    internal void Initialize()
+    internal async void Initialize()
     {
-      System.Threading.Tasks.Task<string> usernameTask = SecureStorage.GetAsync(LoginViewModel.UsernameKey);
-      System.Threading.Tasks.Task<string> passwordTask = SecureStorage.GetAsync(LoginViewModel.PasswordKey);
+      this.Username = await SecureStorage.GetAsync(LoginViewModel.UsernameKey);
+      this.Password = await SecureStorage.GetAsync(LoginViewModel.PasswordKey);
 
-      this.Username = usernameTask.Result;
-      this.Password = passwordTask.Result;
-
-      if(firstOpened)
+      if (this.firstOpened)
       {
-        this.LoginCommandExecute();
+        if (!string.IsNullOrEmpty(this.Username) && !string.IsNullOrEmpty(this.Password))
+        {
+          App.Client = new Client(new CustomHttpClient(this.Username, this.Password));
+          await Continue();
+        }
+
         this.firstOpened = false;
       }
+    }
+
+    private static async Task Continue()
+    {
+      await Shell.Current.GoToAsync($"//{nameof(PostsPage)}");
     }
 
     private async void LoginCommandExecute()
@@ -80,7 +88,7 @@ namespace handshakeMobile.ViewModels
 
       try
       {
-        var test = await client.UserGetAsync();
+        UserGetData test = await client.UserGetAsync();
         this.Message = $"Signed in as {test.Nickname}.";
 
         await SecureStorage.SetAsync(LoginViewModel.UsernameKey, this.Username);
@@ -88,7 +96,7 @@ namespace handshakeMobile.ViewModels
 
         App.Client = client;
 
-        await Shell.Current.GoToAsync($"//{nameof(PostsPage)}");
+        await Continue();
       }
       catch (ApiException exception)
       {

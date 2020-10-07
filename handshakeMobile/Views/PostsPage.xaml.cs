@@ -1,24 +1,38 @@
-﻿using Xamarin.Forms;
-
-using handshakeMobile.ViewModels;
+﻿using handshakeMobile.ViewModels;
+using Xamarin.Forms;
 
 namespace handshakeMobile.Views
 {
   public partial class PostsPage : ContentPage
   {
-    PostsViewModel _viewModel;
+    #region Constructors
 
     public PostsPage()
     {
       InitializeComponent();
 
-      BindingContext = _viewModel = new PostsViewModel();
+      this.ViewModel = App.Resolve<PostsViewModel>();
     }
+
+    #endregion Constructors
+
+    #region Properties
+
+    public PostsViewModel ViewModel
+    {
+      get { return this.BindingContext as PostsViewModel; }
+      set { this.BindingContext = value; }
+    }
+
+    #endregion Properties
+
+    #region Methods
 
     protected override void OnAppearing()
     {
-      base.OnAppearing();
-      _viewModel.OnAppearing();
+      this.ViewModel.OnAppearing();
     }
+
+    #endregion Methods
   }
 }

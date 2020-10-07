@@ -10,7 +10,7 @@ namespace handshakeMobile.Views
     public NewPostPage()
     {
       InitializeComponent();
-      BindingContext = new NewPostViewModel();
+      BindingContext = App.Resolve<NewPostViewModel>();
     }
 
     #endregion Constructors

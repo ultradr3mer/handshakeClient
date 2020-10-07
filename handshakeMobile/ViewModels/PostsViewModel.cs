@@ -1,5 +1,7 @@
-﻿using handshakeMobile.Services;
+﻿using handshakeMobile.Enums;
+using handshakeMobile.Services;
 using handshakeMobile.Views;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -11,6 +13,8 @@ namespace handshakeMobile.ViewModels
   {
     #region Fields
 
+    private readonly LocationCache locationCache;
+
     private string propMessage;
     private PostGetData propSelectedPost;
 
@@ -18,15 +22,16 @@ namespace handshakeMobile.ViewModels
 
     #region Constructors
 
-    public PostsViewModel()
+    public PostsViewModel(LocationCache locationCache)
     {
-      Title = "Browse";
-      Posts = new ObservableCollection<PostGetData>();
-      LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+      this.Title = "Browse";
+      this.Posts = new ObservableCollection<PostGetData>();
+      this.LoadItemsCommand = new Command(async () => await this.ExecuteLoadItemsCommand());
 
-      ItemTapped = new Command<PostGetData>(OnPostSelected);
+      this.ItemTapped = new Command<PostGetData>(this.OnPostSelected);
 
-      AddItemCommand = new Command(OnAddItem);
+      this.AddItemCommand = new Command(this.OnAddItem);
+      this.locationCache = locationCache;
     }
 
     #endregion Constructors
@@ -39,19 +44,23 @@ namespace handshakeMobile.ViewModels
 
     public string Message
     {
-      get { return propMessage; }
-      set { SetProperty(ref propMessage, value); }
+      get { return this.propMessage; }
+      set { this.SetProperty(ref this.propMessage, value); }
     }
 
     public ObservableCollection<PostGetData> Posts { get; }
 
     public PostGetData SelectedPost
     {
-      get => propSelectedPost;
+      get
+      {
+        return this.propSelectedPost;
+      }
+
       set
       {
-        SetProperty(ref propSelectedPost, value);
-        OnPostSelected(value);
+        this.SetProperty(ref this.propSelectedPost, value);
+        this.OnPostSelected(value);
       }
     }
 
@@ -61,23 +70,22 @@ namespace handshakeMobile.ViewModels
 
     public void OnAppearing()
     {
-      IsBusy = true;
-      SelectedPost = null;
+      this.IsBusy = true;
+      this.SelectedPost = null;
     }
 
     private async Task ExecuteLoadItemsCommand()
     {
-      IsBusy = true;
+      this.IsBusy = true;
 
       try
       {
-        Posts.Clear();
-        var request = new GeolocationRequest(GeolocationAccuracy.Medium);
-        var location = await Geolocation.GetLocationAsync(request);
-        var items = await App.Client.PostGetclosepostsAsync(location.Latitude, location.Longitude);
-        foreach (var item in items)
+        this.Posts.Clear();
+        Location location = await this.locationCache.GetCurrentLocation(TimePassed.AMomentAgo);
+        System.Collections.Generic.ICollection<PostGetData> items = await App.Client.PostGetclosepostsAsync(location.Latitude, location.Longitude);
+        foreach (PostGetData item in items)
         {
-          Posts.Add(item);
+          this.Posts.Add(item);
         }
       }
       catch (ApiException exception)
@@ -86,7 +94,7 @@ namespace handshakeMobile.ViewModels
       }
       finally
       {
-        IsBusy = false;
+        this.IsBusy = false;
       }
     }
 
@@ -98,7 +106,9 @@ namespace handshakeMobile.ViewModels
     private async void OnPostSelected(PostGetData item)
     {
       if (item == null)
+      {
         return;
+      }
 
       await Shell.Current.GoToAsync($"{nameof(PostDetailPage)}?{nameof(PostDetailViewModel.Id)}={item.Id}");
     }

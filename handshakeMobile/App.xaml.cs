@@ -1,8 +1,7 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using handshakeMobile.Enums;
 using handshakeMobile.Services;
-using handshakeMobile.Views;
+using Unity;
+using Xamarin.Forms;
 
 namespace handshakeMobile
 {
@@ -11,15 +10,22 @@ namespace handshakeMobile
     public static bool IsUserLoggedIn { get; internal set; }
     public static Client Client { get; internal set; }
 
+    private static UnityContainer container = new UnityContainer();
+
     public App()
     {
       InitializeComponent();
-
       MainPage = new AppShell();
+      container.RegisterSingleton<LocationCache>();
     }
 
     protected override void OnStart()
     {
+      var locationCache = Resolve<LocationCache>();
+
+      #pragma warning disable CS4014
+      locationCache.GetCurrentLocation(TimePassed.JustNow);
+      #pragma warning restore CS4014
     }
 
     protected override void OnSleep()
@@ -28,6 +34,11 @@ namespace handshakeMobile
 
     protected override void OnResume()
     {
+    }
+
+    public static T Resolve<T>()
+    {
+      return container.Resolve<T>();
     }
   }
 }
