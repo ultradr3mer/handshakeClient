@@ -7,31 +7,44 @@
              Title="{Binding Title}">
   <RefreshView x:DataType="local:PostDetailViewModel" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
     <StackLayout Spacing="20" Padding="15">
-      <Label Text="{Binding Content}"/>
-      <CollectionView x:Name="ItemsListView"
+      <ScrollView VerticalOptions="FillAndExpand">
+        <StackLayout>
+          <Label Text="{Binding AuthorName}" FontSize="16"/>
+          <Label Text="{Binding Content}" FontSize="13"/>
+          <CollectionView x:Name="ItemsListView"
                 ItemsSource="{Binding Replys}"
                 SelectionMode="None">
-        <CollectionView.ItemTemplate>
-          <DataTemplate>
-            <StackLayout Padding="10" x:DataType="service:PostReplyGetData">
-              <Label Text="{Binding AuthorName}" 
+            <CollectionView.ItemTemplate>
+              <DataTemplate>
+                <StackLayout Padding="10" x:DataType="service:PostReplyGetData">
+                  <Label Text="{Binding AuthorName}" 
                   LineBreakMode="NoWrap" 
                   Style="{DynamicResource ListItemTextStyle}" 
                   FontSize="16" />
-              <Label Text="{Binding Content}" 
+                  <Label Text="{Binding Content}" 
                   Style="{DynamicResource ListItemDetailTextStyle}"
                   FontSize="13" />
-              <!--<StackLayout.GestureRecognizers>
+                  <!--<StackLayout.GestureRecognizers>
                 <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:PostsViewModel}}, Path=ItemTapped}"		
                                 CommandParameter="{Binding .}">
                 </TapGestureRecognizer>
               </StackLayout.GestureRecognizers>-->
-            </StackLayout>
-          </DataTemplate>
-        </CollectionView.ItemTemplate>
-      </CollectionView>
+                </StackLayout>
+              </DataTemplate>
+            </CollectionView.ItemTemplate>
+          </CollectionView>
+        </StackLayout>
+      </ScrollView>
+      <StackLayout Orientation="Horizontal">
+        <Editor Text="{Binding NewReplyText, Mode=TwoWay}" FontSize="Medium" AutoSize="TextChanges" HorizontalOptions="FillAndExpand"/>
+        <Button Text="Reply" Command="{Binding PostReplyCommand}" />
+        <!--<ActivityIndicator x:Name="defaultActivityIndicator"
+                             VerticalOptions="CenterAndExpand"
+                             HorizontalOptions="FillAndExpand" 
+                             IsRunning="{Binding IsBusy}"/>-->
+      </StackLayout>
     </StackLayout>
   </RefreshView>
 </ContentPage>

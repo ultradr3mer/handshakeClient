@@ -1,7 +1,6 @@
 ﻿using handshakeMobile.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace handshakeMobile.ViewModels
@@ -11,11 +10,14 @@ namespace handshakeMobile.ViewModels
   {
     #region Fields
 
+    private Guid idGuid;
     private string propAuthorName;
     private string propContent;
     private string propId;
+    private bool propIsPosting;
+    private string propMessage;
+    private string propNewReplyText;
     private ObservableCollection<PostReplyGetData> propReplys;
-    private Guid idGuid;
 
     #endregion Fields
 
@@ -25,21 +27,12 @@ namespace handshakeMobile.ViewModels
     {
       this.Replys = new ObservableCollection<PostReplyGetData>();
       this.RefreshCommand = new Command(this.RefreshCommandExecute);
-    }
-
-    private void RefreshCommandExecute(object obj)
-    {
-      this.LoadItemById(this.idGuid);
+      this.PostReplyCommand = new Command(this.PostReplyCommandExecute);
     }
 
     #endregion Constructors
 
     #region Properties
-
-    public Command RefreshCommand
-    {
-      get;
-    }
 
     public string AuthorName
     {
@@ -62,8 +55,37 @@ namespace handshakeMobile.ViewModels
       set
       {
         this.propId = value;
-        this.LoadItemById(Guid.Parse(value));
+        this.idGuid = Guid.Parse(value);
+        this.IsBusy = true;
       }
+    }
+
+    public bool IsPosting
+    {
+      get { return propIsPosting; }
+      set { SetProperty(ref propIsPosting, value); }
+    }
+
+    public string Message
+    {
+      get { return propMessage; }
+      set { SetProperty(ref propMessage, value); }
+    }
+
+    public string NewReplyText
+    {
+      get { return propNewReplyText; }
+      set { SetProperty(ref propNewReplyText, value); }
+    }
+
+    public Command PostReplyCommand
+    {
+      get;
+    }
+
+    public Command RefreshCommand
+    {
+      get;
     }
 
     public ObservableCollection<PostReplyGetData> Replys
@@ -79,7 +101,6 @@ namespace handshakeMobile.ViewModels
     public async void LoadItemById(Guid itemId)
     {
       this.IsBusy = true;
-      this.idGuid = itemId;
 
       try
       {
@@ -94,14 +115,51 @@ namespace handshakeMobile.ViewModels
           this.Replys.Add(reply);
         }
       }
-      catch (Exception)
+      catch (ApiException exception)
       {
-        Debug.WriteLine("Failed to Load Item");
+        this.Message = exception.ToString();
       }
       finally
       {
         this.IsBusy = false;
       }
+    }
+
+    private async void PostReplyCommandExecute(object obj)
+    {
+      if (IsPosting)
+      {
+        return;
+      }
+
+      this.IsPosting = true;
+
+      try
+      {
+        ReplyPostData post = new ReplyPostData()
+        {
+          Content = this.NewReplyText,
+          Post = this.idGuid
+        };
+        var repy = await App.Client.ReplyAsync(post);
+
+        this.Replys.Clear();
+      }
+      catch (ApiException exception)
+      {
+        this.Message = exception.ToString();
+      }
+      finally
+      {
+        this.IsPosting = false;
+      }
+
+      this.LoadItemById(this.idGuid);
+    }
+
+    private void RefreshCommandExecute(object obj)
+    {
+      this.LoadItemById(this.idGuid);
     }
 
     #endregion Methods

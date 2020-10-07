@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-
+﻿using handshakeMobile.Services;
 using handshakeMobile.Views;
-using handshakeMobile.Services;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace handshakeMobile.ViewModels
 {
   public class PostsViewModel : BaseViewModel
   {
+    #region Fields
+
+    private string propMessage;
     private PostGetData propSelectedPost;
 
-    public ObservableCollection<PostGetData> Posts { get; }
-    public Command LoadItemsCommand { get; }
-    public Command AddItemCommand { get; }
-    public Command<PostGetData> ItemTapped { get; }
+    #endregion Fields
+
+    #region Constructors
 
     public PostsViewModel()
     {
@@ -31,7 +29,43 @@ namespace handshakeMobile.ViewModels
       AddItemCommand = new Command(OnAddItem);
     }
 
-    async Task ExecuteLoadItemsCommand()
+    #endregion Constructors
+
+    #region Properties
+
+    public Command AddItemCommand { get; }
+    public Command<PostGetData> ItemTapped { get; }
+    public Command LoadItemsCommand { get; }
+
+    public string Message
+    {
+      get { return propMessage; }
+      set { SetProperty(ref propMessage, value); }
+    }
+
+    public ObservableCollection<PostGetData> Posts { get; }
+
+    public PostGetData SelectedPost
+    {
+      get => propSelectedPost;
+      set
+      {
+        SetProperty(ref propSelectedPost, value);
+        OnPostSelected(value);
+      }
+    }
+
+    #endregion Properties
+
+    #region Methods
+
+    public void OnAppearing()
+    {
+      IsBusy = true;
+      SelectedPost = null;
+    }
+
+    private async Task ExecuteLoadItemsCommand()
     {
       IsBusy = true;
 
@@ -46,29 +80,13 @@ namespace handshakeMobile.ViewModels
           Posts.Add(item);
         }
       }
-      catch (Exception ex)
+      catch (ApiException exception)
       {
-        Debug.WriteLine(ex);
+        this.Message = exception.ToString();
       }
       finally
       {
         IsBusy = false;
-      }
-    }
-
-    public void OnAppearing()
-    {
-      IsBusy = true;
-      SelectedPost = null;
-    }
-
-    public PostGetData SelectedPost
-    {
-      get => propSelectedPost;
-      set
-      {
-        SetProperty(ref propSelectedPost, value);
-        OnPostSelected(value);
       }
     }
 
@@ -77,13 +95,14 @@ namespace handshakeMobile.ViewModels
       await Shell.Current.GoToAsync(nameof(NewPostPage));
     }
 
-    async void OnPostSelected(PostGetData item)
+    private async void OnPostSelected(PostGetData item)
     {
       if (item == null)
         return;
 
-      // This will push the ItemDetailPage onto the navigation stack
       await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(PostDetailViewModel.Id)}={item.Id}");
     }
+
+    #endregion Methods
   }
 }
