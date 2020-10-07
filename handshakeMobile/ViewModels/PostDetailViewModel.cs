@@ -27,7 +27,8 @@ namespace handshakeMobile.ViewModels
     {
       this.Replys = new ObservableCollection<PostReplyGetData>();
       this.RefreshCommand = new Command(this.RefreshCommandExecute);
-      this.PostReplyCommand = new Command(this.PostReplyCommandExecute);
+      this.PostReplyCommand = new Command(this.PostReplyCommandExecute, this.PostReplyCommandCanExecute);
+      this.PropertyChanged += this.PostDetailViewModelPropertyChanged;
     }
 
     #endregion Constructors
@@ -60,22 +61,22 @@ namespace handshakeMobile.ViewModels
       }
     }
 
-    public bool IsPosting
+    public bool IsPostingRepy
     {
-      get { return propIsPosting; }
-      set { SetProperty(ref propIsPosting, value); }
+      get { return this.propIsPosting; }
+      set { this.SetProperty(ref this.propIsPosting, value); }
     }
 
     public string Message
     {
-      get { return propMessage; }
-      set { SetProperty(ref propMessage, value); }
+      get { return this.propMessage; }
+      set { this.SetProperty(ref this.propMessage, value); }
     }
 
     public string NewReplyText
     {
-      get { return propNewReplyText; }
-      set { SetProperty(ref propNewReplyText, value); }
+      get { return this.propNewReplyText; }
+      set { this.SetProperty(ref this.propNewReplyText, value); }
     }
 
     public Command PostReplyCommand
@@ -125,14 +126,22 @@ namespace handshakeMobile.ViewModels
       }
     }
 
-    private async void PostReplyCommandExecute(object obj)
+    private void PostDetailViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-      if (IsPosting)
+      if (e.PropertyName == nameof(this.NewReplyText) || e.PropertyName == nameof(this.IsPostingRepy))
+      {
+        this.PostReplyCommand.ChangeCanExecute();
+      }
+    }
+
+    private async void PostReplyCommandExecute()
+    {
+      if (this.IsPostingRepy)
       {
         return;
       }
 
-      this.IsPosting = true;
+      this.IsPostingRepy = true;
 
       try
       {
@@ -141,9 +150,10 @@ namespace handshakeMobile.ViewModels
           Content = this.NewReplyText,
           Post = this.idGuid
         };
-        var repy = await App.Client.ReplyAsync(post);
+        ReplyEntity repy = await App.Client.ReplyAsync(post);
 
         this.Replys.Clear();
+        this.NewReplyText = string.Empty;
       }
       catch (ApiException exception)
       {
@@ -151,13 +161,18 @@ namespace handshakeMobile.ViewModels
       }
       finally
       {
-        this.IsPosting = false;
+        this.IsPostingRepy = false;
       }
 
       this.LoadItemById(this.idGuid);
     }
 
-    private void RefreshCommandExecute(object obj)
+    private bool PostReplyCommandCanExecute()
+    {
+      return !string.IsNullOrEmpty(this.NewReplyText) && !this.IsPostingRepy;
+    }
+
+    private void RefreshCommandExecute()
     {
       this.LoadItemById(this.idGuid);
     }

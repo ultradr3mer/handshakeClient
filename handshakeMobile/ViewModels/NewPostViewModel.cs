@@ -1,5 +1,4 @@
-﻿using handshakeMobile.Extensions;
-using handshakeMobile.Services;
+﻿using handshakeMobile.Services;
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -21,7 +20,7 @@ namespace handshakeMobile.ViewModels
 
     public NewPostViewModel()
     {
-      this.SaveCommand = new Command(this.OnSave, this.ValidateSave);
+      this.SaveCommand = new Command(this.SaveCommandExecute, this.SaveCommandCanExecute);
       this.CancelCommand = new Command(this.OnCancel);
       this.PropertyChanged +=
           (_, __) => this.SaveCommand.ChangeCanExecute();
@@ -91,7 +90,13 @@ namespace handshakeMobile.ViewModels
       await Shell.Current.GoToAsync("..");
     }
 
-    private async void OnSave()
+    private bool SaveCommandCanExecute()
+    {
+      return !string.IsNullOrWhiteSpace(this.Text)
+          && this.Location != null;
+    }
+
+    private async void SaveCommandExecute()
     {
       this.IsBusy = true;
       this.Message = string.Empty;
@@ -119,12 +124,6 @@ namespace handshakeMobile.ViewModels
       {
         this.IsBusy = true;
       }
-    }
-
-    private bool ValidateSave()
-    {
-      return !string.IsNullOrWhiteSpace(this.Text)
-          && this.Location != null;
     }
 
     #endregion Methods

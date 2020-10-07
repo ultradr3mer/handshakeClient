@@ -4,9 +4,9 @@ using handshakeMobile.ViewModels;
 
 namespace handshakeMobile.Views
 {
-  public partial class ItemDetailPage : ContentPage
+  public partial class PostDetailPage : ContentPage
   {
-    public ItemDetailPage()
+    public PostDetailPage()
     {
       InitializeComponent();
       BindingContext = new PostDetailViewModel();

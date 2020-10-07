@@ -100,7 +100,7 @@ namespace handshakeMobile.ViewModels
       if (item == null)
         return;
 
-      await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(PostDetailViewModel.Id)}={item.Id}");
+      await Shell.Current.GoToAsync($"{nameof(PostDetailPage)}?{nameof(PostDetailViewModel.Id)}={item.Id}");
     }
 
     #endregion Methods

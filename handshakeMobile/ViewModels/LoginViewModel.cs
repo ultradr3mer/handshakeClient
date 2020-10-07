@@ -14,6 +14,7 @@ namespace handshakeMobile.ViewModels
     private string propMessage;
     private string propPassword;
     private string propUsername;
+    private bool firstOpened = true;
 
     #endregion Fields
 
@@ -62,9 +63,15 @@ namespace handshakeMobile.ViewModels
 
       this.Username = usernameTask.Result;
       this.Password = passwordTask.Result;
+
+      if(firstOpened)
+      {
+        this.LoginCommandExecute();
+        this.firstOpened = false;
+      }
     }
 
-    private async void LoginCommandExecute(object obj)
+    private async void LoginCommandExecute()
     {
       this.IsBusy = true;
       this.Message = string.Empty;
@@ -81,7 +88,7 @@ namespace handshakeMobile.ViewModels
 
         App.Client = client;
 
-        await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(PostsPage)}");
       }
       catch (ApiException exception)
       {
@@ -98,7 +105,7 @@ namespace handshakeMobile.ViewModels
 
     private async void SignupCommandExecute(object obj)
     {
-      await Shell.Current.GoToAsync($"//{nameof(SignupPage)}");
+      await Shell.Current.GoToAsync(nameof(SignupPage));
     }
 
     #endregion Methods

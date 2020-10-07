@@ -75,20 +75,19 @@
   </Shell.Resources>
 
   <ShellContent Route="LoginPage" Shell.FlyoutBehavior="Disabled" ContentTemplate="{DataTemplate local:LoginPage}" />
-  <ShellContent Route="SignupPage" Shell.FlyoutBehavior="Disabled" ContentTemplate="{DataTemplate local:SignupPage}" />
-  
+
   <!-- 
         When the Flyout is visible this defines the content to display in the flyout.
         FlyoutDisplayOptions="AsMultipleItems" will create a separate flyout item for each child element    
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
   <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+    <ShellContent Title="Browse" Icon="tab_feed.png" Route="PostsPage" ContentTemplate="{DataTemplate local:PostsPage}" />
     <ShellContent Title="About" Icon="tab_about.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
-    <ShellContent Title="Browse" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:PostsPage}" />
   </FlyoutItem>
 
   <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
-  <MenuItem Text="Logout" StyleClass="MenuItemLayoutStyle" Clicked="OnMenuItemClicked">
+  <MenuItem Text="Logout" StyleClass="MenuItemLayoutStyle" Clicked="OnLogoutClicked">
   </MenuItem>
 
   <!--
