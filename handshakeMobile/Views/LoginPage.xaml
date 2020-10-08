@@ -6,7 +6,13 @@
              mc:Ignorable="d"
              x:Class="handshakeMobile.Views.LoginPage"
              xmlns:viewModel="clr-namespace:handshakeMobile.ViewModels"
+             xmlns:comp="clr-namespace:handshakeMobile.Composite"
              Shell.NavBarIsVisible="False" x:DataType="viewModel:LoginViewModel">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <comp:StringNullOrEmptyBoolConverter x:Key="StringNullOrEmptyBoolConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
   <ContentPage.Content>
     <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
       <Label Text="Username" />
@@ -15,11 +21,13 @@
       <Entry Placeholder="password" IsPassword="true" Text="{Binding Password}" />
       <Button Text="Login" Command="{Binding LoginCommand}"/>
       <Button Text="Signup" Command="{Binding SignupCommand}" />
-      <ActivityIndicator x:Name="defaultActivityIndicator"
+      <ActivityIndicator IsVisible="{Binding IsBusy}" 
+                         x:Name="defaultActivityIndicator"
                          VerticalOptions="CenterAndExpand"
                          HorizontalOptions="Fill" 
                          IsRunning="{Binding IsBusy}"/>
-      <Label Text="{Binding Message}" />
+      <Label IsVisible="{Binding Message, Converter={StaticResource StringNullOrEmptyBoolConverter}}" 
+             Text="{Binding Message}" />
     </StackLayout>
   </ContentPage.Content>
 </ContentPage>

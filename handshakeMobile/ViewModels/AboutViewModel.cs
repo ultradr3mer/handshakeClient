@@ -1,4 +1,5 @@
-﻿using System;
+﻿using handshakeMobile.Composite;
+using System;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;

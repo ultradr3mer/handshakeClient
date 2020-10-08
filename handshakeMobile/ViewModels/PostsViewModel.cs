@@ -1,4 +1,5 @@
-﻿using handshakeMobile.Enums;
+﻿using handshakeMobile.Composite;
+using handshakeMobile.Enums;
 using handshakeMobile.Services;
 using handshakeMobile.Views;
 using System;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace handshakeMobile.ViewModels
+namespace handshakeMobile.Composite
 {
   public class BaseViewModel : INotifyPropertyChanged
   {

@@ -1,4 +1,5 @@
-﻿using handshakeMobile.Services;
+﻿using handshakeMobile.Composite;
+using handshakeMobile.Services;
 using handshakeMobile.Views;
 using System;
 using System.Net.Http;
@@ -7,34 +8,68 @@ using Xamarin.Forms;
 
 namespace handshakeMobile.ViewModels
 {
+  [QueryProperty(nameof(Id), nameof(Id))]
   public class SignupViewModel : BaseViewModel
   {
+    #region Fields
+
+    private string propId;
+    private bool propIsAccepted;
     private string propMessage;
     private string propNickname;
     private string propPassword;
+    private string propPasswordRepeat;
     private string propUsername;
+
+    #endregion Fields
+
+    #region Constructors
 
     public SignupViewModel()
     {
-      this.SignupCommand = new Command(SignupCommandExecute);
+      this.SignupCommand = new Command(this.SignupCommandExecute, this.SignupCommandCanExecute);
+
+      this.PropertyChanged += this.SignupViewModelPropertyChanged;
+    }
+
+    #endregion Constructors
+
+    #region Properties
+
+    public string Id
+    {
+      get { return this.propId; }
+      set { this.SetProperty(ref this.propId, value); }
+    }
+
+    public bool IsAccepted
+    {
+      get { return propIsAccepted; }
+      set { SetProperty(ref propIsAccepted, value); }
     }
 
     public string Message
     {
-      get { return propMessage; }
-      set { SetProperty(ref propMessage, value); }
+      get { return this.propMessage; }
+      set { this.SetProperty(ref this.propMessage, value); }
     }
 
     public string Nickname
     {
-      get { return propNickname; }
-      set { SetProperty(ref propNickname, value); }
+      get { return this.propNickname; }
+      set { this.SetProperty(ref this.propNickname, value); }
     }
 
     public string Password
     {
-      get { return propPassword; }
-      set { SetProperty(ref propPassword, value); }
+      get { return this.propPassword; }
+      set { this.SetProperty(ref this.propPassword, value); }
+    }
+
+    public string PasswordRepeat
+    {
+      get { return this.propPasswordRepeat; }
+      set { this.SetProperty(ref this.propPasswordRepeat, value); }
     }
 
     public Command SignupCommand
@@ -44,34 +79,54 @@ namespace handshakeMobile.ViewModels
 
     public string Username
     {
-      get { return propUsername; }
-      set { SetProperty(ref propUsername, value); }
+      get { return this.propUsername; }
+      set { this.SetProperty(ref this.propUsername, value); }
     }
 
-    private string propId;
-    public string Id
+    #endregion Properties
+
+    #region Methods
+
+    private bool SignupCommandCanExecute()
     {
-      get { return propId; }
-      set { SetProperty(ref propId, value); }
+      return !string.IsNullOrEmpty(this.Id)
+        && !string.IsNullOrEmpty(this.Password)
+        && !string.IsNullOrEmpty(this.PasswordRepeat)
+        && !string.IsNullOrEmpty(this.Username)
+        && this.IsAccepted;
     }
 
-    private async void SignupCommandExecute(object obj)
+    private async void SignupCommandExecute()
     {
-      this.IsBusy = true;
       this.Message = string.Empty;
 
       Client client = new Client(new HttpClient());
 
+      if (!Guid.TryParse(this.Id, out Guid inviteCode))
+      {
+        this.Message = "Invite code invalid.";
+        return;
+      }
+
+      if(this.Password != this.PasswordRepeat)
+      {
+        this.Message = "Passwords must match.";
+        return;
+      }
+
+      this.IsBusy = true;
+
       try
       {
-        var data = new UserPostData()
+        UserPostData data = new UserPostData()
         {
+          InviteCode = inviteCode,
           Username = this.Username,
           Nickname = this.Nickname,
           Password = this.Password
         };
 
-        await client.UserPostAsync(data);
+        await client.SignupAsync(data);
 
         await SecureStorage.SetAsync(LoginViewModel.UsernameKey, this.Username);
         await SecureStorage.SetAsync(LoginViewModel.PasswordKey, this.Password);
@@ -89,5 +144,12 @@ namespace handshakeMobile.ViewModels
         this.IsBusy = false;
       }
     }
+
+    private void SignupViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      this.SignupCommand.ChangeCanExecute();
+    }
+
+    #endregion Methods
   }
 }

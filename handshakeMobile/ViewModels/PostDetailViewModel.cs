@@ -1,4 +1,5 @@
-﻿using handshakeMobile.Services;
+﻿using handshakeMobile.Composite;
+using handshakeMobile.Services;
 using System;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;

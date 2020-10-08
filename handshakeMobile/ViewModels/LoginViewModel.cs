@@ -1,4 +1,5 @@
-﻿using handshakeMobile.Services;
+﻿using handshakeMobile.Composite;
+using handshakeMobile.Services;
 using handshakeMobile.Views;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -88,7 +89,7 @@ namespace handshakeMobile.ViewModels
 
       try
       {
-        UserGetData test = await client.UserGetAsync();
+        UserGetData test = await client.UserAsync();
         this.Message = $"Signed in as {test.Nickname}.";
 
         await SecureStorage.SetAsync(LoginViewModel.UsernameKey, this.Username);
