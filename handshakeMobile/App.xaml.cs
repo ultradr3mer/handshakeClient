@@ -1,4 +1,5 @@
-﻿using handshakeMobile.Enums;
+﻿
+using handshakeMobile.Enums;
 using handshakeMobile.Services;
 using Unity;
 using Xamarin.Forms;
@@ -11,6 +12,7 @@ namespace handshakeMobile
     public static Client Client { get; internal set; }
 
     private static UnityContainer container = new UnityContainer();
+    private string initialNavigation;
 
     public App()
     {
@@ -19,13 +21,24 @@ namespace handshakeMobile
       container.RegisterSingleton<LocationCache>();
     }
 
+    public App(string initialNavigation) : this()
+    {
+      this.initialNavigation = initialNavigation;
+    }
+
     protected override void OnStart()
     {
       var locationCache = Resolve<LocationCache>();
 
-      #pragma warning disable CS4014
+
+#pragma warning disable CS4014
       locationCache.GetCurrentLocation(TimePassed.JustNow);
-      #pragma warning restore CS4014
+#pragma warning restore CS4014
+
+      if (!string.IsNullOrEmpty(initialNavigation))
+      {
+        Shell.Current.GoToAsync(this.initialNavigation);
+      }
     }
 
     protected override void OnSleep()

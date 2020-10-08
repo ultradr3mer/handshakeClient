@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace handshakeMobile.ViewModels
 {
-  internal class SignupViewModel : BaseViewModel
+  public class SignupViewModel : BaseViewModel
   {
     private string propMessage;
     private string propNickname;
@@ -46,6 +46,13 @@ namespace handshakeMobile.ViewModels
     {
       get { return propUsername; }
       set { SetProperty(ref propUsername, value); }
+    }
+
+    private string propId;
+    public string Id
+    {
+      get { return propId; }
+      set { SetProperty(ref propId, value); }
     }
 
     private async void SignupCommandExecute(object obj)
