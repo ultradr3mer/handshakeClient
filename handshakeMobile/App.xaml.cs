@@ -28,13 +28,6 @@ namespace handshakeMobile
 
     protected override void OnStart()
     {
-      var locationCache = Resolve<LocationCache>();
-
-
-#pragma warning disable CS4014
-      locationCache.GetCurrentLocation(TimePassed.JustNow);
-#pragma warning restore CS4014
-
       if (!string.IsNullOrEmpty(initialNavigation))
       {
         Shell.Current.GoToAsync(this.initialNavigation);
